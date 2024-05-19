@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Verse;
 
-namespace Helicopter
+namespace Helicopter;
+
+public class CompProperties_LaunchableHelicopter : CompProperties
 {
-    public class CompProperties_LaunchableHelicopter : CompProperties
+    public CompProperties_LaunchableHelicopter()
     {
-        // Token: 0x06000A9A RID: 2714 RVA: 0x00054A5B File Offset: 0x00052E5B
-        public CompProperties_LaunchableHelicopter()
-        {
-            this.compClass = typeof(CompLaunchableHelicopter);
-        }
+        compClass = typeof(CompLaunchableHelicopter);
     }
 }

@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <CargoPodBuild.label>транспортный модуль</CargoPodBuild.label>
+  <CargoPodBuild.description>Запускаемый суборбитальный транспортный модуль. Может перевозить людей, животных, вещи. Может использоваться для отправки подарков и транспортировки людей для атаки.</CargoPodBuild.description>
+</LanguageData>

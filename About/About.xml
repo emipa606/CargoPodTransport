@@ -1,13 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Cargo Pod Transport[1.1]</name>
-  <author>Jellypowered</author>
-  <url>http://rimworldgame.com</url>
-  <supportedVersions><li>1.1</li></supportedVersions>
-  <packageId>jelly.CargoPodTransport</packageId>
-  <description>
-  A Simple Cargo Pod Transport MOD.
-  Updated to 1.1 by Jellypowered.
-  Original Author: AKreedz
-  </description>
+  <name>Cargo Pod Transport (Continued)</name>
+  <packageId>Mlie.CargoPodTransport</packageId>
+  <author>AKreedz</author>
+  <url>https://github.com/emipa606/CargoPodTransport</url>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+    <li>1.2</li>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
+Update of AKreedzs mod https://steamcommunity.com/sharedfiles/filedetails/?id=1536615776
+Based on the update by Jellypowered https://steamcommunity.com/sharedfiles/filedetails/?id=2008989746
+
+[img]https://i.imgur.com/pufA0kM.png[/img]
+
+[table]
+    [tr][td][url=https://dsc.gg/mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td] [td][url=https://github.com/emipa606/CargoPodTransport][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
+Code:
+www.med
+iafire.com/file/hmu9
+52kf79e641i/Helicopter.rar/file
+(I gave up updating, anyone can use my source code)
+
+(Old name is Helicopter MOD)
+Add Cargo Pod Transport to Rimworld
+
+Similar to transporterpod, but Cargo Pod Transport has more capacity and can fly anywhere on the world map without disappearing when it landed.
+
+Tips:If you can not find your cargo pod,check your pawn inventory
+
+==================================
+[h1]Warning: [/h1]Do not drop to the edge of map,this pod will be removed if it doesn't get enough space to landed
+==================================
+
+You can building Cargo Pod Transport after you unlock the transportpod tech(In Misc category).
+
+2018-10-16:
+-you can carry downed pawn into the Cargo Pod Transport now
+
+2018-10-19
+-1.0 version
+
+2018-10-20
+-now Cargo Pod Transport won't move position when it landed(maybe)
+
+2018-10-21
+-change MOD name,and change texture(Thanks @JerrBear888)
+
+2021-02-23
+- RimWorld ver1.2 is supported
+
+2021-03-04
+- Rimefeller supported
+
+[img]https://i.imgur.com/PwoNOj4.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list]</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.5.1</modVersion>
 </ModMetaData>

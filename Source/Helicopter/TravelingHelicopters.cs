@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Helicopter;
 
-namespace Helicopter
-{
-    public class TravelingHelicopters
-    {
-    }
-}
+public class TravelingHelicopters;
