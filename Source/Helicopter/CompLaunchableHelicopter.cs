@@ -62,10 +62,7 @@ public class CompLaunchableHelicopter : ThingComp
     {
         get
         {
-            if (cachedCompTransporter == null)
-            {
-                cachedCompTransporter = parent.GetComp<CompTransporter>();
-            }
+            cachedCompTransporter ??= parent.GetComp<CompTransporter>();
 
             return cachedCompTransporter;
         }
@@ -236,7 +233,7 @@ public class CompLaunchableHelicopter : ThingComp
                 var transportPodsFloatMenuOptionsAt = GetTransportPodsFloatMenuOptionsAt(target.Tile);
                 if (!transportPodsFloatMenuOptionsAt.Any())
                 {
-                    if (Find.WorldGrid[target.Tile].biome.impassable || Find.World.Impassable(target.Tile))
+                    if (Find.WorldGrid[target.Tile].PrimaryBiome.impassable || Find.World.Impassable(target.Tile))
                     {
                         return "MessageTransportPodsDestinationIsInvalid".Translate();
                     }
@@ -290,7 +287,7 @@ public class CompLaunchableHelicopter : ThingComp
                 var transportPodsFloatMenuOptionsAt = GetTransportPodsFloatMenuOptionsAt(target.Tile, car);
                 if (!transportPodsFloatMenuOptionsAt.Any())
                 {
-                    if (Find.WorldGrid[target.Tile].biome.impassable || Find.World.Impassable(target.Tile))
+                    if (Find.WorldGrid[target.Tile].PrimaryBiome.impassable || Find.World.Impassable(target.Tile))
                     {
                         return "MessageTransportPodsDestinationIsInvalid".Translate();
                     }
@@ -345,7 +342,7 @@ public class CompLaunchableHelicopter : ThingComp
             return false;
         }
 
-        if (Find.WorldGrid[target.Tile].biome.impassable || Find.World.Impassable(target.Tile))
+        if (Find.WorldGrid[target.Tile].PrimaryBiome.impassable || Find.World.Impassable(target.Tile))
         {
             Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageTypeDefOf.RejectInput,
                 false);
@@ -360,14 +357,14 @@ public class CompLaunchableHelicopter : ThingComp
 
         if (!transportPodsFloatMenuOptionsAt.Any())
         {
-            if (Find.WorldGrid[target.Tile].biome.impassable || Find.World.Impassable(target.Tile))
+            if (Find.WorldGrid[target.Tile].PrimaryBiome.impassable || Find.World.Impassable(target.Tile))
             {
                 Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageTypeDefOf.RejectInput,
                     false);
                 return false;
             }
 
-            TryLaunch(target.Tile, null);
+            TryLaunch(target.Tile, new TransportersArrivalAction_LandInSpecificCell());
             return true;
         }
 
@@ -385,8 +382,7 @@ public class CompLaunchableHelicopter : ThingComp
         return false;
     }
 
-
-    public void TryLaunch(int destinationTile, TransportPodsArrivalAction arrivalAction, Caravan cafr = null)
+    public void TryLaunch(int destinationTile, TransportersArrivalAction arrivalAction, Caravan cafr = null)
     {
         if (cafr == null)
         {
@@ -440,8 +436,8 @@ public class CompLaunchableHelicopter : ThingComp
             helicopter.stackCount = 1;
             directlyHeldThings.TryAddOrTransfer(helicopter);
 
-            var activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
-            activeDropPod.Contents = new ActiveDropPodInfo();
+            var activeDropPod = (ActiveTransporter)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
+            activeDropPod.Contents = new ActiveTransporterInfo();
             activeDropPod.Contents.innerContainer.TryAddRangeOrTransfer(directlyHeldThings, true, true);
             var dropPodLeaving =
                 (HelicopterLeaving)SkyfallerMaker.MakeSkyfaller(ThingDef.Named("HelicopterLeaving"), activeDropPod);
@@ -504,8 +500,8 @@ public class CompLaunchableHelicopter : ThingComp
             }
 
 
-            var activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
-            activeDropPod.Contents = new ActiveDropPodInfo();
+            var activeDropPod = (ActiveTransporter)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
+            activeDropPod.Contents = new ActiveTransporterInfo();
             activeDropPod.Contents.innerContainer.TryAddRangeOrTransfer(finalto, true, true);
 
             cafr.RemoveAllPawns();
@@ -515,14 +511,14 @@ public class CompLaunchableHelicopter : ThingComp
             }
 
             var travelingTransportPods =
-                (TravelingTransportPods)WorldObjectMaker.MakeWorldObject(
+                (TravellingTransporters)WorldObjectMaker.MakeWorldObject(
                     DefDatabase<WorldObjectDef>.GetNamed("TravelingHelicopters"));
             travelingTransportPods.Tile = cafr.Tile;
             travelingTransportPods.SetFaction(Faction.OfPlayer);
             travelingTransportPods.destinationTile = destinationTile;
             travelingTransportPods.arrivalAction = arrivalAction;
             Find.WorldObjects.Add(travelingTransportPods);
-            travelingTransportPods.AddPod(activeDropPod.Contents, true);
+            travelingTransportPods.AddTransporter(activeDropPod.Contents, true);
             activeDropPod.Contents = null;
             activeDropPod.Destroy();
             Find.WorldTargeter.StopTargeting();
@@ -560,12 +556,12 @@ public class CompLaunchableHelicopter : ThingComp
 
         if (car == null)
         {
-            if (TransportPodsArrivalAction_FormCaravan.CanFormCaravanAt(pods, tile) &&
+            if (TransportersArrivalAction_FormCaravan.CanFormCaravanAt(pods, tile) &&
                 !Find.WorldObjects.AnySettlementBaseAt(tile) && !Find.WorldObjects.AnySiteAt(tile))
             {
                 anything = true;
                 yield return new FloatMenuOption("FormCaravanHere".Translate(),
-                    delegate { TryLaunch(tile, new TransportPodsArrivalAction_FormCaravan()); });
+                    delegate { TryLaunch(tile, new TransportersArrivalAction_FormCaravan()); });
             }
         }
         else
@@ -575,7 +571,7 @@ public class CompLaunchableHelicopter : ThingComp
             {
                 anything = true;
                 yield return new FloatMenuOption("FormCaravanHere".Translate(),
-                    delegate { TryLaunch(tile, new TransportPodsArrivalAction_FormCaravan(), car); });
+                    delegate { TryLaunch(tile, new TransportersArrivalAction_FormCaravan(), car); });
             }
         }
 
@@ -591,7 +587,7 @@ public class CompLaunchableHelicopter : ThingComp
             if (nowre.ToList().Count < 1)
             {
                 yield return new FloatMenuOption("FormCaravanHere".Translate(),
-                    delegate { TryLaunch(tile, new TransportPodsArrivalAction_FormCaravan(), car); });
+                    delegate { TryLaunch(tile, new TransportersArrivalAction_FormCaravan(), car); });
             }
             else
             {

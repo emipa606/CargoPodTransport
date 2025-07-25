@@ -2,7 +2,7 @@
 <ModSyncNinjaData>
   <ID>e8866990-64af-4b2f-83d7-cdcba741a870</ID>
   <ModName>Cargo Pod Transport (Continued)</ModName>
-  <Version>1.5.1</Version>
+  <Version>1.6.0</Version>
   <SaveBreaking>False</SaveBreaking>
   <Host name="Github">
     <Owner>emipa606</Owner>
@@ -12,8 +12,4 @@
     <Branch>master</Branch>
   </Host>
 </ModSyncNinjaData>
-
-
-
-
 

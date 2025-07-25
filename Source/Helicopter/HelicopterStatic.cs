@@ -45,7 +45,7 @@ public static class HelicopterStatic
         }
         */
 
-        if (TransportPodsArrivalAction_LandInSpecificCell.CanLandInSpecificCell(pods, mapparent))
+        if (TransportersArrivalAction_LandInSpecificCell.CanLandInSpecificCell(pods, mapparent))
         {
             yield return new FloatMenuOption("LandInExistingMap".Translate(mapparent.Label), delegate
             {
@@ -58,7 +58,7 @@ public static class HelicopterStatic
                     delegate(LocalTargetInfo x)
                     {
                         representative.TryLaunch(mapparent.Tile,
-                            new TransportPodsArrivalAction_LandInSpecificCell(mapparent, x.Cell), car);
+                            new TransportersArrivalAction_LandInSpecificCell(mapparent, x.Cell), car);
                     }, null, delegate
                     {
                         if (myMap != null && Find.Maps.Contains(myMap))
@@ -88,16 +88,16 @@ public static class HelicopterStatic
         IEnumerable<IThingHolder> pods, Site site, Caravan car)
     {
         foreach (var f in HelicoptersArrivalActionUtility.GetFloatMenuOptions(
-                     () => TransportPodsArrivalAction_VisitSite.CanVisit(pods, site),
-                     () => new TransportPodsArrivalAction_VisitSite(site, PawnsArrivalModeDefOf.EdgeDrop),
+                     () => TransportersArrivalAction_VisitSite.CanVisit(pods, site),
+                     () => new TransportersArrivalAction_VisitSite(site, PawnsArrivalModeDefOf.EdgeDrop),
                      "DropAtEdge".Translate(), representative, site.Tile, car))
         {
             yield return f;
         }
 
         foreach (var f2 in HelicoptersArrivalActionUtility.GetFloatMenuOptions(
-                     () => TransportPodsArrivalAction_VisitSite.CanVisit(pods, site),
-                     () => new TransportPodsArrivalAction_VisitSite(site, PawnsArrivalModeDefOf.CenterDrop),
+                     () => TransportersArrivalAction_VisitSite.CanVisit(pods, site),
+                     () => new TransportersArrivalAction_VisitSite(site, PawnsArrivalModeDefOf.CenterDrop),
                      "DropInCenter".Translate(), representative, site.Tile, car))
         {
             yield return f2;

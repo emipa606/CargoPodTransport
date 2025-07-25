@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: Transport Cargo Pod(incoming) -->
+  <HelicopterIncoming.label>Transport Cargo Pod(incoming)</HelicopterIncoming.label>
+  <!-- EN: Transport Cargo Pod(leaving) -->
+  <HelicopterLeaving.label>Transport Cargo Pod(leaving)</HelicopterLeaving.label>
+</LanguageData>

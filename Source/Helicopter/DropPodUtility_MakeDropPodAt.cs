@@ -7,7 +7,7 @@ namespace Helicopter;
 [HarmonyPatch(typeof(DropPodUtility), nameof(DropPodUtility.MakeDropPodAt))]
 public static class DropPodUtility_MakeDropPodAt
 {
-    public static bool Prefix(IntVec3 c, Map map, ActiveDropPodInfo info)
+    public static bool Prefix(IntVec3 c, Map map, ActiveTransporterInfo info)
     {
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var index = 0; index < info.innerContainer.Count; index++)
@@ -17,7 +17,7 @@ public static class DropPodUtility_MakeDropPodAt
                 continue;
             }
 
-            var activeDropPod = (ActiveDropPod)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
+            var activeDropPod = (ActiveTransporter)ThingMaker.MakeThing(ThingDef.Named("ActiveHelicopter"));
             activeDropPod.Contents = info;
 
             EnsureInBounds(ref c, map);

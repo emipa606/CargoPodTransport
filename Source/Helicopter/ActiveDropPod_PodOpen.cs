@@ -5,13 +5,13 @@ using Verse;
 namespace Helicopter;
 
 //helicopter direct place
-[HarmonyPatch(typeof(ActiveDropPod), "PodOpen")]
+[HarmonyPatch(typeof(ActiveTransporter), "PodOpen")]
 public static class ActiveDropPod_PodOpen
 {
-    public static void Prefix(ActiveDropPod __instance)
+    public static void Prefix(ActiveTransporter __instance)
     {
         var tv = Traverse.Create(__instance);
-        var contents = tv.Field("contents").GetValue<ActiveDropPodInfo>();
+        var contents = tv.Field("contents").GetValue<ActiveTransporterInfo>();
         for (var i = contents.innerContainer.Count - 1; i >= 0; i--)
         {
             var thing = contents.innerContainer[i];

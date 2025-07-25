@@ -2,5 +2,17 @@
   "Continued": true,
   "CanAdd": "0",
   "CanRemove": "2",
-  "PreviewVersion": "1.5"
+  "PreviewVersion": "1.6",
+  "Patches": false,
+  "Defs": true,
+  "Assemblies": true,
+  "LinesOfCode": 49900,
+  "LinesOfXML": 6880,
+  "CodeBaseSize": 75,
+  "LastXmlCleaning": "2025-07-25T20:53:50.218163+02:00",
+  "SocialImageSet": true,
+  "SearchTags": [
+    " pods",
+    " capacity"
+  ]
 }

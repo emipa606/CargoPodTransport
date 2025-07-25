@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: Cargo Pod -->
+  <CargoPodBuild.label>Cargo Pod</CargoPodBuild.label>
+  <!-- EN: Learn to build Cargo Pod. -->
+  <CargoPodBuild.description>Learn to build Cargo Pod.</CargoPodBuild.description>
+</LanguageData>

@@ -5,22 +5,22 @@ using Verse;
 
 namespace Helicopter;
 
-public class HelicopterLeaving : Skyfaller, IActiveDropPod
+public class HelicopterLeaving : Skyfaller, IActiveTransporter
 {
     private static readonly List<Thing> tmpActiveDropPods = [];
 
     private bool alreadyLeft;
 
-    public TransportPodsArrivalAction arrivalAction;
+    public TransportersArrivalAction arrivalAction;
 
     public int destinationTile = -1;
 
     public int groupID = -1;
 
-    public ActiveDropPodInfo Contents
+    public ActiveTransporterInfo Contents
     {
-        get => ((ActiveDropPod)innerContainer[0]).Contents;
-        set => ((ActiveDropPod)innerContainer[0]).Contents = value;
+        get => ((ActiveTransporter)innerContainer[0]).Contents;
+        set => ((ActiveTransporter)innerContainer[0]).Contents = value;
     }
 
     public override void ExposeData()
@@ -61,7 +61,7 @@ public class HelicopterLeaving : Skyfaller, IActiveDropPod
         }
 
         var travelingTransportPods =
-            (TravelingTransportPods)WorldObjectMaker.MakeWorldObject(
+            (TravellingTransporters)WorldObjectMaker.MakeWorldObject(
                 DefDatabase<WorldObjectDef>.GetNamed("TravelingHelicopters"));
         travelingTransportPods.Tile = Map.Tile;
         travelingTransportPods.SetFaction(Faction.OfPlayer);
@@ -69,7 +69,7 @@ public class HelicopterLeaving : Skyfaller, IActiveDropPod
         travelingTransportPods.arrivalAction = arrivalAction;
         Find.WorldObjects.Add(travelingTransportPods);
         tmpActiveDropPods.Clear();
-        tmpActiveDropPods.AddRange(Map.listerThings.ThingsInGroup(ThingRequestGroup.ActiveDropPod));
+        tmpActiveDropPods.AddRange(Map.listerThings.ThingsInGroup(ThingRequestGroup.ActiveTransporter));
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < tmpActiveDropPods.Count; i++)
         {
@@ -79,7 +79,7 @@ public class HelicopterLeaving : Skyfaller, IActiveDropPod
             }
 
             HelicopterLeaving.alreadyLeft = true;
-            travelingTransportPods.AddPod(HelicopterLeaving.Contents, true);
+            travelingTransportPods.AddTransporter(HelicopterLeaving.Contents, true);
             HelicopterLeaving.Contents = null;
             HelicopterLeaving.Destroy();
         }
