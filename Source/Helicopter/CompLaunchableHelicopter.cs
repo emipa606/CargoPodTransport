@@ -18,8 +18,6 @@ public class CompLaunchableHelicopter : ThingComp
 
     private static readonly Texture2D LaunchCommandTex = ContentFinder<Texture2D>.Get("UI/Commands/LaunchShip");
 
-    private CompTransporter cachedCompTransporter;
-
     private Caravan carr;
 
     public Building FuelingPortSource => (Building)parent;
@@ -62,17 +60,17 @@ public class CompLaunchableHelicopter : ThingComp
     {
         get
         {
-            cachedCompTransporter ??= parent.GetComp<CompTransporter>();
+            field ??= parent.GetComp<CompTransporter>();
 
-            return cachedCompTransporter;
+            return field;
         }
     }
 
     public float FuelingPortSourceFuel => !ConnectedToFuelingPort ? 0f : parent.GetComp<CompRefuelable>().Fuel;
 
-    public bool AllInGroupConnectedToFuelingPort => true;
+    public static bool AllInGroupConnectedToFuelingPort => true;
 
-    public bool AllFuelingPortSourcesInGroupHaveAnyFuel => true;
+    public static bool AllFuelingPortSourcesInGroupHaveAnyFuel => true;
 
     private float FuelInLeastFueledFuelingPortSource => FuelingPortSourceFuel;
 
@@ -155,7 +153,8 @@ public class CompLaunchableHelicopter : ThingComp
                 if (AnyInGroupHasAnythingLeftToLoad)
                 {
                     Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
-                        "ConfirmSendNotCompletelyLoadedPods".Translate(FirstThingLeftToLoadInGroup.LabelCapNoCount),
+                        "ConfirmSendNotCompletelyLoadedLaunchable".Translate(
+                            FirstThingLeftToLoadInGroup.LabelCapNoCount),
                         StartChoosingDestination));
                 }
                 else

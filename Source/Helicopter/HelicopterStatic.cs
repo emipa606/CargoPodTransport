@@ -11,40 +11,25 @@ public static class HelicopterStatic
     public static IEnumerable<FloatMenuOption> getFM(WorldObject wobj, IEnumerable<IThingHolder> ih,
         CompLaunchableHelicopter comp, Caravan car)
     {
-        if (wobj is Caravan)
+        switch (wobj)
         {
-            return [];
+            case Caravan:
+                return [];
+            case Site site:
+                return GetSite(site, ih, comp, car);
+            case Settlement settlement:
+                return GetSettle(settlement, ih, comp, car);
+            case MapParent parent:
+                return GetMapParent(parent, ih, comp, car);
+            default:
+                return [];
         }
-
-        if (wobj is Site site)
-        {
-            return GetSite(site, ih, comp, car);
-        }
-
-        if (wobj is Settlement settlement)
-        {
-            return GetSettle(settlement, ih, comp, car);
-        }
-
-        if (wobj is MapParent parent)
-        {
-            return GetMapParent(parent, ih, comp, car);
-        }
-
-        return [];
     }
 
 
     public static IEnumerable<FloatMenuOption> GetMapParent(MapParent mapparent, IEnumerable<IThingHolder> pods,
         CompLaunchableHelicopter representative, Caravan car)
     {
-        /*
-        foreach (FloatMenuOption o in mapparent.GetFloatMenuOptions())
-        {
-            yield return o;
-        }
-        */
-
         if (TransportersArrivalAction_LandInSpecificCell.CanLandInSpecificCell(pods, mapparent))
         {
             yield return new FloatMenuOption("LandInExistingMap".Translate(mapparent.Label), delegate

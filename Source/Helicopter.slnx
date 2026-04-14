@@ -6,4 +6,24 @@
     <BuildType Name="Release" />
   </Configurations>
   <Project Path="Helicopter/Helicopter.csproj" />
+  <Folder Name="/XML/1.6/Defs/ThingDefs_Misc/">
+    <File Path="../1.6/Defs/ThingDefs_Misc/Ethereal_Skyfallers.xml" />
+    <File Path="../1.6/Defs/ThingDefs_Misc/Things_Special.xml" />
+  </Folder>
+  <Folder Name="/XML/Languages/English/Keyed/">
+    <File Path="../Languages/English/Keyed/Keys.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/ResearchProjectDefs/">
+    <File Path="../1.6/Defs/ResearchProjectDefs/ResearchProjects.xml" />
+    <File Path="../1.6/Defs/ResearchProjectDefs/ResearchTabs.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/ThingDefs_Buildings/">
+    <File Path="../1.6/Defs/ThingDefs_Buildings/Buildings_Misc.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/WorldObjectDefs/">
+    <File Path="../1.6/Defs/WorldObjectDefs/WorldObjects.xml" />
+  </Folder>
+  <Folder Name="/XML/About/">
+    <File Path="../About/about.xml" />
+  </Folder>
 </Solution>

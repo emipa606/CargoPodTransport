@@ -10,8 +10,7 @@ namespace Helicopter;
     nameof(TransportersArrivalAction_LandInSpecificCell.Arrived))]
 public static class TransportPodsArrivalAction_LandInSpecificCell_Arrived
 {
-    public static bool Prefix(TransportersArrivalAction_LandInSpecificCell __instance,
-        List<ActiveTransporterInfo> transporters)
+    public static bool Prefix(List<ActiveTransporterInfo> transporters, IntVec3 ___cell, MapParent ___mapParent)
     {
         foreach (var info in transporters)
         {
@@ -21,13 +20,11 @@ public static class TransportPodsArrivalAction_LandInSpecificCell_Arrived
             }
 
             var lookTarget = TransportersArrivalActionUtility.GetLookTarget(transporters);
-            var tv = Traverse.Create(__instance);
-            var c = tv.Field("cell").GetValue<IntVec3>();
-            var map = tv.Field("mapParent").GetValue<MapParent>().Map;
+
             TransportersArrivalActionUtility.RemovePawnsFromWorldPawns(transporters);
             foreach (var activeDropPodInfo in transporters)
             {
-                DropPodUtility.MakeDropPodAt(c, map, activeDropPodInfo);
+                DropPodUtility.MakeDropPodAt(___cell, ___mapParent.Map, activeDropPodInfo);
             }
 
             Messages.Message("MessageTransportPodsArrived".Translate(), lookTarget,

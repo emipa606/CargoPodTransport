@@ -20,7 +20,7 @@ public class HelicopterLeaving : Skyfaller, IActiveTransporter
     public ActiveTransporterInfo Contents
     {
         get => ((ActiveTransporter)innerContainer[0]).Contents;
-        set => ((ActiveTransporter)innerContainer[0]).Contents = value;
+        private set => ((ActiveTransporter)innerContainer[0]).Contents = value;
     }
 
     public override void ExposeData()

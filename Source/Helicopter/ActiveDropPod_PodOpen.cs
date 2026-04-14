@@ -8,13 +8,11 @@ namespace Helicopter;
 [HarmonyPatch(typeof(ActiveTransporter), "PodOpen")]
 public static class ActiveDropPod_PodOpen
 {
-    public static void Prefix(ActiveTransporter __instance)
+    public static void Prefix(ActiveTransporter __instance, ActiveTransporterInfo ___contents)
     {
-        var tv = Traverse.Create(__instance);
-        var contents = tv.Field("contents").GetValue<ActiveTransporterInfo>();
-        for (var i = contents.innerContainer.Count - 1; i >= 0; i--)
+        for (var i = ___contents.innerContainer.Count - 1; i >= 0; i--)
         {
-            var thing = contents.innerContainer[i];
+            var thing = ___contents.innerContainer[i];
             if (thing == null || thing.def.defName != "Building_Helicopter")
             {
                 continue;

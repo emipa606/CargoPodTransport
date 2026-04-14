@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
@@ -29,7 +29,7 @@ public static class HelicoptersArrivalActionUtility
                 var floatMenuAcceptanceReport = acceptanceReportGetter();
                 if (floatMenuAcceptanceReport.Accepted)
                 {
-                    representative.TryLaunch(destinationTile, new TransportersArrivalAction_FormCaravan(), car);
+                    representative.TryLaunch(destinationTile, arrivalActionGetter(), car);
                 }
                 else if (!floatMenuAcceptanceReport.FailMessage.NullOrEmpty())
                 {

@@ -10,19 +10,16 @@ namespace Helicopter;
 [HarmonyPatch(typeof(Dialog_LoadTransporters), "AddPawnsToTransferables")]
 public static class Dialog_LoadTransporters_AddPawnsToTransferables
 {
-    public static bool Prefix(Dialog_LoadTransporters __instance)
+    public static bool Prefix(Dialog_LoadTransporters __instance, List<CompTransporter> ___transporters, Map ___map)
     {
-        var tv = Traverse.Create(__instance);
-        var lp = tv.Field("transporters").GetValue<List<CompTransporter>>();
-        foreach (var lpc in lp)
+        foreach (var lpc in ___transporters)
         {
             if (lpc.parent.TryGetComp<CompLaunchableHelicopter>() == null)
             {
                 continue;
             }
 
-            var map = tv.Field("map").GetValue<Map>();
-            var list = CaravanFormingUtility.AllSendablePawns(map, true, true, true, true);
+            var list = CaravanFormingUtility.AllSendablePawns(___map, true, true, true, true);
             foreach (var pawn in list)
             {
                 var typ = __instance.GetType();
