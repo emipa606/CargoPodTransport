@@ -27,12 +27,11 @@ public static class Caravan_GetGizmos
             }
         }
 
-        foreach (var pawn in __instance.pawns.InnerListForReading)
+        foreach (var innerContainer in __instance.pawns.InnerListForReading.Select(p => p.inventory.innerContainer))
         {
-            var pinv = pawn.inventory;
-            for (var i = 0; i < pinv.innerContainer.Count; i++)
+            for (var i = 0; i < innerContainer.Count; i++)
             {
-                if (pinv.innerContainer[i].def.defName != "Building_Helicopter")
+                if (innerContainer[i].def.defName != "Building_Helicopter")
                 {
                     continue;
                 }
@@ -45,10 +44,10 @@ public static class Caravan_GetGizmos
                     alsoClickIfOtherInGroupClicked = false,
                     action = delegate
                     {
-                        var maxmass = pinv.innerContainer[i].TryGetComp<CompTransporter>().Props.massCapacity;
+                        var maxmass = innerContainer[i].TryGetComp<CompTransporter>().Props.massCapacity;
                         if (masss <= maxmass)
                         {
-                            pinv.innerContainer[i].TryGetComp<CompLaunchableHelicopter>()
+                            innerContainer[i].TryGetComp<CompLaunchableHelicopter>()
                                 .WorldStartChoosingDestination(__instance);
                         }
                         else
@@ -73,9 +72,8 @@ public static class Caravan_GetGizmos
                     {
                         var hasAddFuel = false;
                         var fcont = 0;
-                        var comprf = pinv.innerContainer[i].TryGetComp<CompRefuelable>();
+                        var comprf = innerContainer[i].TryGetComp<CompRefuelable>();
                         var list = CaravanInventoryUtility.AllInventoryItems(__instance);
-                        //pinv.innerContainer.Count
                         // ReSharper disable once ForCanBeConvertedToForeach
                         for (var j = 0; j < list.Count; j++)
                         {
@@ -99,7 +97,6 @@ public static class Caravan_GetGizmos
                             }
 
 
-                            // Log.Warning("f&n is "+fcont+"/"+need);
                             if (list[j].stackCount * 1f <= fcont)
                             {
                                 list[j].stackCount -= fcont;
@@ -139,9 +136,9 @@ public static class Caravan_GetGizmos
 
                 var fuelStat = new Gizmo_MapRefuelableFuelStatus
                 {
-                    nowFuel = pinv.innerContainer[i].TryGetComp<CompRefuelable>().Fuel,
-                    maxFuel = pinv.innerContainer[i].TryGetComp<CompRefuelable>().Props.fuelCapacity,
-                    compLabel = pinv.innerContainer[i].TryGetComp<CompRefuelable>().Props.FuelGizmoLabel
+                    nowFuel = innerContainer[i].TryGetComp<CompRefuelable>().Fuel,
+                    maxFuel = innerContainer[i].TryGetComp<CompRefuelable>().Props.fuelCapacity,
+                    compLabel = innerContainer[i].TryGetComp<CompRefuelable>().Props.FuelGizmoLabel
                 };
 
 

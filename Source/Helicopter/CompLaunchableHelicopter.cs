@@ -13,50 +13,38 @@ public class CompLaunchableHelicopter : ThingComp
 {
     private const float FuelPerTile = 2.25f;
 
-    public static readonly Texture2D TargeterMouseAttachment =
+    private static readonly Texture2D TargeterMouseAttachment =
         ContentFinder<Texture2D>.Get("UI/Overlays/LaunchableMouseAttachment");
 
     private static readonly Texture2D LaunchCommandTex = ContentFinder<Texture2D>.Get("UI/Commands/LaunchShip");
 
     private Caravan carr;
 
-    public Building FuelingPortSource => (Building)parent;
+    private Building FuelingPortSource => (Building)parent;
 
-    public bool ConnectedToFuelingPort => FuelingPortSource != null;
+    private bool ConnectedToFuelingPort => FuelingPortSource != null;
 
     public bool FuelingPortSourceHasAnyFuel =>
         ConnectedToFuelingPort && FuelingPortSource.GetComp<CompRefuelable>().HasFuel;
 
-    public bool LoadingInProgressOrReadyToLaunch => Transporter.LoadingInProgressOrReadyToLaunch;
+    private bool LoadingInProgressOrReadyToLaunch => Transporter.LoadingInProgressOrReadyToLaunch;
 
     public bool AnythingLeftToLoad => Transporter.AnythingLeftToLoad;
 
     public Thing FirstThingLeftToLoad => Transporter.FirstThingLeftToLoad;
 
-    public List<CompTransporter> TransportersInGroup => [parent.TryGetComp<CompTransporter>()];
+    private List<CompTransporter> TransportersInGroup => [parent.TryGetComp<CompTransporter>()];
 
-    public bool AnyInGroupHasAnythingLeftToLoad => Transporter.AnyInGroupHasAnythingLeftToLoad;
+    private bool AnyInGroupHasAnythingLeftToLoad => Transporter.AnyInGroupHasAnythingLeftToLoad;
 
-    public Thing FirstThingLeftToLoadInGroup => Transporter.FirstThingLeftToLoadInGroup;
+    private Thing FirstThingLeftToLoadInGroup => Transporter.FirstThingLeftToLoadInGroup;
 
-    public bool AnyInGroupIsUnderRoof
+    private bool AnyInGroupIsUnderRoof
     {
-        get
-        {
-            var transportersInGroup = TransportersInGroup;
-            foreach (var compTransporter in transportersInGroup)
-            {
-                if (compTransporter.parent.Position.Roofed(parent.Map))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        get { return TransportersInGroup.Any(compTransporter => compTransporter.parent.Position.Roofed(parent.Map)); }
     }
 
-    public CompTransporter Transporter
+    private CompTransporter Transporter
     {
         get
         {
@@ -66,11 +54,11 @@ public class CompLaunchableHelicopter : ThingComp
         }
     }
 
-    public float FuelingPortSourceFuel => !ConnectedToFuelingPort ? 0f : parent.GetComp<CompRefuelable>().Fuel;
+    private float FuelingPortSourceFuel => !ConnectedToFuelingPort ? 0f : parent.GetComp<CompRefuelable>().Fuel;
 
-    public static bool AllInGroupConnectedToFuelingPort => true;
+    private static bool AllInGroupConnectedToFuelingPort => true;
 
-    public static bool AllFuelingPortSourcesInGroupHaveAnyFuel => true;
+    private static bool AllFuelingPortSourcesInGroupHaveAnyFuel => true;
 
     private float FuelInLeastFueledFuelingPortSource => FuelingPortSourceFuel;
 
@@ -114,9 +102,8 @@ public class CompLaunchableHelicopter : ThingComp
         get
         {
             var transportersInGroup = TransportersInGroup;
-            foreach (var compTransporter in transportersInGroup)
+            foreach (var innerContainer in transportersInGroup.Select(transporter => transporter.innerContainer))
             {
-                var innerContainer = compTransporter.innerContainer;
                 foreach (var thing in innerContainer)
                 {
                     if (thing is Pawn pawn && CaravanUtility.IsOwner(pawn, Faction.OfPlayer))
@@ -315,12 +302,9 @@ public class CompLaunchableHelicopter : ThingComp
 
     private bool ChoseWorldTarget(GlobalTargetInfo target)
     {
-        if (carr == null)
+        if (carr == null && !LoadingInProgressOrReadyToLaunch)
         {
-            if (!LoadingInProgressOrReadyToLaunch)
-            {
-                return true;
-            }
+            return true;
         }
 
         if (!target.IsValid)
@@ -383,21 +367,15 @@ public class CompLaunchableHelicopter : ThingComp
 
     public void TryLaunch(int destinationTile, TransportersArrivalAction arrivalAction, Caravan cafr = null)
     {
-        if (cafr == null)
+        if (cafr == null && !parent.Spawned)
         {
-            if (!parent.Spawned)
-            {
-                Log.Error($"Tried to launch {parent}, but it's unspawned.");
-                return;
-            }
+            Log.Error($"Tried to launch {parent}, but it's unspawned.");
+            return;
         }
 
-        if (parent.Spawned)
+        if (parent.Spawned && !LoadingInProgressOrReadyToLaunch)
         {
-            if (!LoadingInProgressOrReadyToLaunch)
-            {
-                return;
-            }
+            return;
         }
 
         if (!AllInGroupConnectedToFuelingPort || !AllFuelingPortSourcesInGroupHaveAnyFuel)
@@ -467,19 +445,19 @@ public class CompLaunchableHelicopter : ThingComp
 
             var directlyHeldThings = (ThingOwner<Pawn>)cafr.GetDirectlyHeldThings();
             Thing helicopter = null;
-            foreach (var pawn in directlyHeldThings.InnerListForReading)
+            foreach (var innerContainer in
+                     directlyHeldThings.InnerListForReading.Select(p => p.inventory.innerContainer))
             {
-                var pinv = pawn.inventory;
                 // ReSharper disable once ForCanBeConvertedToForeach
-                for (var i = 0; i < pinv.innerContainer.Count; i++)
+                for (var i = 0; i < innerContainer.Count; i++)
                 {
-                    if (pinv.innerContainer[i].def.defName != "Building_Helicopter")
+                    if (innerContainer[i].def.defName != "Building_Helicopter")
                     {
                         continue;
                     }
 
-                    helicopter = pinv.innerContainer[i];
-                    pinv.innerContainer[i].holdingOwner.Remove(pinv.innerContainer[i]);
+                    helicopter = innerContainer[i];
+                    innerContainer[i].holdingOwner.Remove(innerContainer[i]);
 
                     break;
                 }
@@ -533,17 +511,17 @@ public class CompLaunchableHelicopter : ThingComp
         }
     }
 
-    public static int MaxLaunchDistanceAtFuelLevel(float fuelLevel)
+    private static int MaxLaunchDistanceAtFuelLevel(float fuelLevel)
     {
         return Mathf.FloorToInt(fuelLevel / FuelPerTile);
     }
 
-    public static float FuelNeededToLaunchAtDist(float dist)
+    private static float FuelNeededToLaunchAtDist(float dist)
     {
         return FuelPerTile * dist;
     }
 
-    public IEnumerable<FloatMenuOption> GetTransportPodsFloatMenuOptionsAt(int tile, Caravan car = null)
+    private IEnumerable<FloatMenuOption> GetTransportPodsFloatMenuOptionsAt(int tile, Caravan car = null)
     {
         var anything = false;
         IEnumerable<IThingHolder> pods = TransportersInGroup;

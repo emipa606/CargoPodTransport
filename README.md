@@ -68,4 +68,4 @@ You can building Cargo Pod Transport after you unlock the transportpod tech(In M
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/CargoPodTransport?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3250266494) | tags: pods, capacity
+[![Image](https://img.shields.io/github/v/release/emipa606/CargoPodTransport?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3250266494) | capacity, pods

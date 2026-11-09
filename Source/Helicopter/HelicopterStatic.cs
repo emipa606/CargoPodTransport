@@ -27,7 +27,7 @@ public static class HelicopterStatic
     }
 
 
-    public static IEnumerable<FloatMenuOption> GetMapParent(MapParent mapparent, IEnumerable<IThingHolder> pods,
+    private static IEnumerable<FloatMenuOption> GetMapParent(MapParent mapparent, IEnumerable<IThingHolder> pods,
         CompLaunchableHelicopter representative, Caravan car)
     {
         if (TransportersArrivalAction_LandInSpecificCell.CanLandInSpecificCell(pods, mapparent))
@@ -55,7 +55,7 @@ public static class HelicopterStatic
         }
     }
 
-    public static IEnumerable<FloatMenuOption> GetSite(Site site, IEnumerable<IThingHolder> pods,
+    private static IEnumerable<FloatMenuOption> GetSite(Site site, IEnumerable<IThingHolder> pods,
         CompLaunchableHelicopter representative, Caravan car)
     {
         foreach (var o in GetMapParent(site, pods, representative, car))
@@ -69,7 +69,7 @@ public static class HelicopterStatic
         }
     }
 
-    public static IEnumerable<FloatMenuOption> GetVisitSite(CompLaunchableHelicopter representative,
+    private static IEnumerable<FloatMenuOption> GetVisitSite(CompLaunchableHelicopter representative,
         IEnumerable<IThingHolder> pods, Site site, Caravan car)
     {
         foreach (var f in HelicoptersArrivalActionUtility.GetFloatMenuOptions(
@@ -89,7 +89,7 @@ public static class HelicopterStatic
         }
     }
 
-    public static IEnumerable<FloatMenuOption> GetSettle(Settlement bs, IEnumerable<IThingHolder> pods,
+    private static IEnumerable<FloatMenuOption> GetSettle(Settlement bs, IEnumerable<IThingHolder> pods,
         CompLaunchableHelicopter representative, Caravan car)
     {
         foreach (var o in GetMapParent(bs, pods, representative, car))
